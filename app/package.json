@@ -1,0 +1,16 @@
+{
+  "name": "hushhub-frontend",
+  "version": "1.0.0",
+  "author": "ashraf_minhaj@yahoo.com",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "dotenv": "^10.0.0"
+  },
+  "main": "script.js",
+  "keywords": [],
+  "license": "ISC",
+  "description": ""
+}
