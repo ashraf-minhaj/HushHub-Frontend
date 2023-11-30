@@ -1,0 +1,86 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HushHub</title>
+    <script>
+        // Function to send a message to the backend API
+        function sendMessage() {
+            // Read the backend API URL from the EJS variable
+            const apiUrl = '<%= apiUrl %>';
+            const message = document.getElementById("textInput").value
+            console.log(apiUrl)
+            console.log(message)
+
+            // Make a simple POST request using Fetch API
+            // post: api.com/msgs/ <text on body>
+            // get: api.com/msgs/
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Assuming your backend responds with the saved message details
+                    const { id, text } = data;
+
+                    // Display the sent message on the message board
+                    const messageList = document.getElementById('messageList'); //DOM - document object model
+                    const listItem = document.createElement('li');
+                    listItem.textContent = text;
+                    messageList.appendChild(listItem);
+
+                    // Clear the input field
+                    messageInput.value = '';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // nodemon --exec npm start
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #inputSection {
+            margin-bottom: 20px;
+        }
+
+        #messageBoard {
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HushHub</h1>
+    <p>Share thoughts without sharing your identity</p>
+
+    <!-- Input Section -->
+    <div id="inputSection">
+        <label for="textInput">Your Message:</label>
+        <input type="text" id="textInput" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <!-- Message Board Section -->
+    <div id="messageBoard">
+        <h2>Anonymous Messages</h2>
+        <ul id="messageList"></ul>
+    </div>
+</body>
+
+</html>

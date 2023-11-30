@@ -1,0 +1,6 @@
+app/*
+!app/views
+!app/package*.json
+!server.js 
+
+.DS_Store
