@@ -6,6 +6,7 @@
 
 ![](https://img.shields.io/badge/License-MIT%20License-red?style=plastic&logo=mit)&nbsp;
 ![](https://img.shields.io/badge/NodeJs-18-yellow?style=plastic&logo=javascript)&nbsp;
+![](https://img.shields.io/badge/EJS--yellow?style=plastic&logo=javascript)&nbsp;
 </div>
 
 ### Environment variable file
