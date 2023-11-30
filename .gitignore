@@ -1,5 +1,5 @@
 app/*
-!app/public
+!app/views
 !app/package*.json
 !server.js 
 

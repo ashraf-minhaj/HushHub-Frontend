@@ -8,7 +8,11 @@ const path = require('path');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
+
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -18,9 +22,11 @@ app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK' });
 });
 
-// Serve the HTML file on the root URL
+// Serve the HTML file using EJS
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './', 'index.html'));
+    const apiUrl = process.env.BACKEND_API_URL;
+    console.log(apiUrl)
+    res.render('index', { apiUrl });
 });
 
 // Start the server
