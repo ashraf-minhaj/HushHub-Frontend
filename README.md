@@ -9,6 +9,28 @@
 ![](https://img.shields.io/badge/EJS--yellow?style=plastic&logo=javascript)&nbsp;
 </div>
 
+### setup local development envionment 
+- Install latest version of docker in your system
+- Install python3 on your system (should come with your distro BTW)
+
+- go to the `tools` dir and run tool - 
+  You just need to remember the `image_tag`, the tool handles the rest.
+    ```
+        $ sudo python3 devtool.py <arg> <value>
+    ```
+
+- list of args -
+    ``` 
+        arg          -   value
+        help       
+        build           image_tag 
+        list_images 
+        run             image_tag 
+        stop            image_tag or all
+        logs            image_tag
+        errors          image_tag (todo)
+    ```
+
 ### Environment variable file
 The file should be named as `.env`, devs will get the dev env from the lead. no env specific things should reside on the repository.
 
