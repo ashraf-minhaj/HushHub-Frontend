@@ -1,4 +1,4 @@
-## setup environment first
+## ### setup local development envionment 
 
 - Install latest version of docker in your system
 - Install python3 on your system (should come with your distro BTW)

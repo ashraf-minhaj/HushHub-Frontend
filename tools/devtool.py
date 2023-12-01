@@ -69,6 +69,12 @@ def stop(image_tag):
 #     if err != 0:
 #         print("error, notify devops team")
 
+def get_logs(image_tag):
+    command = f"docker logs $(docker ps -a -q  --filter ancestor={image_tag})"
+    _, err = run_command(job=f"Getting logs for {image_tag}", command=command)
+    if err != 0:
+        print("error, notify devops team")
+
 def get_list_of_images():
     print("List of all images")
     pass
@@ -109,7 +115,7 @@ if __name__ == "__main__":
         elif arg == "list_images":
             get_list_of_images()
         elif arg == "logs":
-            pass
+            get_logs(sys.argv[2])
         elif arg == "errors":
             pass
         else:
