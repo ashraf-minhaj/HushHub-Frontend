@@ -5,6 +5,8 @@
     mail: ashraf_minhaj@yahoo.com
     
     date: 02-12-2023
+
+a docker wrapper tool for local development env.
 """
 
 import sys
@@ -63,12 +65,6 @@ def stop(image_tag):
     if err != 0:
         print("error, notify devops team")
 
-# def stop_all():
-#     command = "docker stop $(docker ps -a -q)"
-#     _, err = run_command(job=f"Stopping all running containers", command=command)
-#     if err != 0:
-#         print("error, notify devops team")
-
 def get_logs(image_tag):
     command = f"docker logs $(docker ps -a -q  --filter ancestor={image_tag})"
     _, err = run_command(job=f"Getting logs for {image_tag}", command=command)
@@ -76,8 +72,11 @@ def get_logs(image_tag):
         print("error, notify devops team")
 
 def get_list_of_images():
-    print("List of all images")
-    pass
+    command = f"docker images"
+    # command = f"cd ../app; ls"
+    _, err = run_command(job=f"getting images", command=command)
+    if err != 0:
+        print("error, notify devops team")
 
 if __name__ == "__main__":
     print("Thanks for using the tool, let us know if you face any bugs.")
@@ -124,6 +123,3 @@ if __name__ == "__main__":
     except Exception as e:
         print("error! report to your devops team")
         print(e)
-
-
-# docker stop $(docker ps -a -q --ancestor=front:3)
