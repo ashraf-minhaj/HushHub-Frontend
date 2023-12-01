@@ -2,43 +2,36 @@
 # author: ashraf minhaj
 # email : ashraf_minhaj@yahoo.com
 # 
-# date: 01-12-23
+# date: 02-12-23
 # the HushHub frontend applicaion
 # ** local development environment **
 #########################################
 
 
-FROM node:18-alpine as builder
+FROM node:18 as builder
 WORKDIR /app
-
-# Create a non-root user and switch to that user
-RUN addgroup -g 1001 -S nodejs \
-    && adduser -u 1001 -S nodejs -G nodejs \
-    && chown -R nodejs:nodejs /app
     
 COPY package*.json ./
 
 RUN npm install
 
-ADD . .
+FROM node:18-alpine
+WORKDIR /app
+
+COPY --from=builder /app/package*.json .
+COPY --from=builder /app/node_modules ./node_modules
+
+# copy and mount the node_modules dir 
+# as volume otherwise it won't be found 
+# by docker
+VOLUME [ "/app/node_modules" ]
+ 
+COPY . .
 
 EXPOSE 3000
 
 CMD ["npm", "start"]
 
-# docker build -t front:1 -f Dockerfile.dev .
-# docker run -p 3000:3000 --env-file .env front:1
-# docker run -v /path/on/host:/usr/src/app/data -p 3000:3000 your-image-name
-
-# docker build -f Dockerfile.dev -t front-dev .
-# docker run --env-file .env -v /:/app -p 3000:3000 front-dev
-#/ docker run --env-file .env -v :/app -p 3000:3000 front-dev
-# sudo docker run --env-file .env -v $(pwd):/app -p 3000:3000 front-dev
-
-# docker run -v /:/app -it -p 3000:3000 --env-file .env front:1 - works but empty response
-# docker run -v $(pwd):/app -it -p 4000:3000 --env-file .env front:1
-# docker run -v app/:/app -it -p 4000:3000 --env-file .env front:1
-
 # -----
-# docker build -t front:1 -f Dockerfile.dev .    
-# docker run --rm -v .:/app -it -p 80:3000 --env-file .env front:1 
+# docker build -t front -f Dockerfile.dev .    
+# docker run --rm -v .:/app -it -p 80:3000 --env-file .env front
