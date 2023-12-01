@@ -8,9 +8,22 @@
 """
 
 import sys
-import docker 
+from subprocess import Popen, PIPE
 
-client = docker.from_env()
+def run_command(job, command):
+    """ runs command and ret err code """
+    print(command)
+    command_response = Popen(f"({command})", stderr=PIPE, stdout=PIPE, shell=True)
+    output, errors = command_response.communicate()
+
+    print(output.decode("utf-8"))
+    if command_response.returncode != 0:
+        print(f"{job} went wrong!")
+        print(errors.decode("utf-8"))
+    # if command_response.returncode == 0:
+    #     print(f"{job} success")
+
+    return output, command_response.returncode
 
 def build_image(image_name):
     """ build docker image by given command. """
@@ -18,12 +31,11 @@ def build_image(image_name):
 
 def run_container(conatiner_tag, to_detach=True):
     print(f"Runing Container {conatiner_tag}")
-    client.containers.run(f"{conatiner_tag}", detach=to_detach)
+    pass
 
 def get_list_of_images():
     print("List of all images")
-    images = client.images.list()
-    print(images)
+    pass
 
 if __name__ == "__main__":
     print("Thanks for using the tool, let us know if you face any bugs.")
@@ -35,19 +47,29 @@ if __name__ == "__main__":
             print("""
                   dev tool to enhance developer experience.
 
-                  run - 
+                  run tool - 
                   $ sudo python3 devtool.py <arg> <value>
                   list of args -
                     arg          -   value
-                    help            
+                    help       
+                    build_app     
                     list_images 
                     run_app         image_tag    
+                    logs            image_tag
+                    errors          image_tag
+                    
                   """)
+        if coammand == "build_app":
+            print(type(sys.argv[2]))
         if coammand == "run_app":
             print(type(sys.argv[2]))
             run_container(conatiner_tag=f"{sys.argv[2]}")
         if coammand == "list_images":
             get_list_of_images()
+        if coammand == "logs":
+            pass
+        if coammand == "errors":
+            pass
         else:
             print("Please pass a valid command, type 'sudo python3 devtool.py help'")
         # get_list_of_images()
