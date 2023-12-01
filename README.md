@@ -20,4 +20,10 @@ The file should be named as `.env`, devs will get the dev env from the lead. no 
     git add . .
     ```
 
+- if you are a mac OSX user and facing permission issue please change setting on your docker-desktop application - 
+
+    ```
+    In Preferences > General there is an option "Use gRPC FUSE for file sharing" which is by default checked. Uncheck that option Apply and restart.
+    ```
+
 > ashraf minhaj
