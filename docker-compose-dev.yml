@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  front-dev:
+    build:
+      context: /app/
+      dockerfile: Dockerfile.dev
+    env_file:
+      - app/.env
+    ports:
+      - "5000:3000"
+    volumes:
+      - app:app/
+
+networks:
+  default:
+    driver: bridge
+
+# docker-compose -f docker-compose-dev.yml up --build
