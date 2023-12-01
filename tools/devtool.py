@@ -10,7 +10,7 @@ a docker wrapper tool for local development env.
 """
 
 import sys
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, STDOUT
 
 # commands = {
 #     "build_image" : "cd ../app; sudo docker build -t hushfront:1"
@@ -33,13 +33,20 @@ def run_command(job, command):
 
     return output, command_response.returncode
 
+def run_with_stream(command):
+    print(f"Executing command: {command}")
+    with Popen(f"({command})", stdout=PIPE, stderr=STDOUT, shell=True, executable="/bin/bash") as process:
+        for line in process.stdout:
+            print(line.decode('utf8'))
+
 def build_image(image_tag):
     """ build docker image by given command. """
     command = f"cd ../app; docker build -t {image_tag} -f {local_docker_file} ."
     # command = f"cd ../app; ls"
-    _, err = run_command(job=f"building {image_tag}", command=command)
-    if err != 0:
-        print("error, notify devops team")
+    # _, err = run_command(job=f"building {image_tag}", command=command)
+    # if err != 0:
+    #     print("error, notify devops team")
+    run_with_stream(command)
 
 def run_container(image_tag, to_detach=True):
     print(f"Runing app Container {image_tag}")
@@ -47,6 +54,8 @@ def run_container(image_tag, to_detach=True):
         command = f"cd ../app; docker run --rm -v .:/app -d -p 80:3000 --env-file .env {image_tag}"
     else:
         command = f"cd ../app; docker run --rm -v .:/app -it -p 80:3000 --env-file .env {image_tag}"
+        run_with_stream(command)
+        return
     out, err = run_command(job=f"Running {image_tag}", command=command)
     if err != 0:
         print("error, notify devops team")
@@ -66,7 +75,7 @@ def stop(image_tag):
         print("error, notify devops team")
 
 def get_logs(image_tag):
-    command = f"docker logs $(docker ps -a -q  --filter ancestor={image_tag})"
+    command = f"docker logs $(docker ps -a -q --filter ancestor={image_tag})"
     _, err = run_command(job=f"Getting logs for {image_tag}", command=command)
     if err != 0:
         print("error, notify devops team")
@@ -106,7 +115,7 @@ if __name__ == "__main__":
             build_image(sys.argv[2])
         elif arg == "run":
             # print(type(sys.argv[2]))
-            run_container(image_tag=f"{sys.argv[2]}")
+            run_container(image_tag=f"{sys.argv[2]}", to_detach=False)
         # elif arg == "stop_all":
         #     stop_all()
         elif arg == "stop":
