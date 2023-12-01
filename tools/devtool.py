@@ -10,10 +10,16 @@
 import sys
 from subprocess import Popen, PIPE
 
+# commands = {
+#     "build_image" : "cd ../app; sudo docker build -t hushfront:1"
+# }
+
+local_docker_file = "Dockerfile.dev"
+
 def run_command(job, command):
     """ runs command and ret err code """
-    print(command)
-    command_response = Popen(f"({command})", stderr=PIPE, stdout=PIPE, shell=True)
+    print(f"Executing command: {command}")
+    command_response = Popen(f"({command})", stderr=PIPE, stdout=PIPE, shell=True, executable="/bin/bash")
     output, errors = command_response.communicate()
 
     print(output.decode("utf-8"))
@@ -25,13 +31,43 @@ def run_command(job, command):
 
     return output, command_response.returncode
 
-def build_image(image_name):
+def build_image(image_tag):
     """ build docker image by given command. """
-    pass
+    command = f"cd ../app; docker build -t {image_tag} -f {local_docker_file} ."
+    # command = f"cd ../app; ls"
+    _, err = run_command(job=f"building {image_tag}", command=command)
+    if err != 0:
+        print("error, notify devops team")
 
-def run_container(conatiner_tag, to_detach=True):
-    print(f"Runing Container {conatiner_tag}")
-    pass
+def run_container(image_tag, to_detach=True):
+    print(f"Runing app Container {image_tag}")
+    if to_detach:
+        command = f"cd ../app; docker run --rm -v .:/app -d -p 80:3000 --env-file .env {image_tag}"
+    else:
+        command = f"cd ../app; docker run --rm -v .:/app -it -p 80:3000 --env-file .env {image_tag}"
+    out, err = run_command(job=f"Running {image_tag}", command=command)
+    if err != 0:
+        print("error, notify devops team")
+
+def stop(image_tag):
+    """ stop a specific container. """
+    print(f"stopping {image_tag}")
+    if image_tag != "all":
+        command = f"docker stop $(docker ps -a -q --filter ancestor={image_tag})"
+    elif image_tag == "all":
+        command = "docker stop $(docker ps -a -q)"
+    else:
+        print("please pass 'image_tag' or 'all' to stop all containers.")
+    # command = f"""docker rm $(docker stop $(docker ps -a -q --filter ancestor={image_tag} --format="{{.ID}}"""
+    _, err = run_command(job=f"Stopping {image_tag}", command=command)
+    if err != 0:
+        print("error, notify devops team")
+
+# def stop_all():
+#     command = "docker stop $(docker ps -a -q)"
+#     _, err = run_command(job=f"Stopping all running containers", command=command)
+#     if err != 0:
+#         print("error, notify devops team")
 
 def get_list_of_images():
     print("List of all images")
@@ -41,9 +77,9 @@ if __name__ == "__main__":
     print("Thanks for using the tool, let us know if you face any bugs.")
     try:
         # get user command
-        coammand = sys.argv[1]
+        arg = sys.argv[1]
 
-        if coammand == "help":
+        if arg == "help":
             print("""
                   dev tool to enhance developer experience.
 
@@ -52,23 +88,29 @@ if __name__ == "__main__":
                   list of args -
                     arg          -   value
                     help       
-                    build_app     
+                    build           image_tag 
                     list_images 
-                    run_app         image_tag    
+                    run             image_tag 
+                    stop            image_tag or all
                     logs            image_tag
                     errors          image_tag
                     
                   """)
-        if coammand == "build_app":
-            print(type(sys.argv[2]))
-        if coammand == "run_app":
-            print(type(sys.argv[2]))
-            run_container(conatiner_tag=f"{sys.argv[2]}")
-        if coammand == "list_images":
+        if arg == "build":
+            # print(type(sys.argv[2]))
+            build_image(sys.argv[2])
+        elif arg == "run":
+            # print(type(sys.argv[2]))
+            run_container(image_tag=f"{sys.argv[2]}")
+        # elif arg == "stop_all":
+        #     stop_all()
+        elif arg == "stop":
+            stop(sys.argv[2])
+        elif arg == "list_images":
             get_list_of_images()
-        if coammand == "logs":
+        elif arg == "logs":
             pass
-        if coammand == "errors":
+        elif arg == "errors":
             pass
         else:
             print("Please pass a valid command, type 'sudo python3 devtool.py help'")
@@ -76,3 +118,6 @@ if __name__ == "__main__":
     except Exception as e:
         print("error! report to your devops team")
         print(e)
+
+
+# docker stop $(docker ps -a -q --ancestor=front:3)
