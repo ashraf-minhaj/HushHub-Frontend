@@ -4,7 +4,7 @@
     author: ashraf minhaj
     mail: ashraf_minhaj@yahoo.com
     
-    date: 02-12-2023
+    date: 07-12-2023
 
 a docker wrapper tool for local development env.
 """
@@ -12,9 +12,6 @@ a docker wrapper tool for local development env.
 import sys
 from subprocess import Popen, PIPE, STDOUT
 
-# commands = {
-#     "build_image" : "cd ../app; sudo docker build -t hushfront:1"
-# }
 
 local_docker_file = "Dockerfile.dev"
 
@@ -42,10 +39,7 @@ def run_with_stream(command):
 def build_image(image_tag):
     """ build docker image by given command. """
     command = f"cd ../app; docker build -t {image_tag} -f {local_docker_file} ."
-    # command = f"cd ../app; ls"
-    # _, err = run_command(job=f"building {image_tag}", command=command)
-    # if err != 0:
-    #     print("error, notify devops team")
+
     run_with_stream(command)
 
 def run_container(image_tag, to_detach=True):
@@ -69,7 +63,7 @@ def stop(image_tag):
         command = "docker stop $(docker ps -a -q)"
     else:
         print("please pass 'image_tag' or 'all' to stop all containers.")
-    # command = f"""docker rm $(docker stop $(docker ps -a -q --filter ancestor={image_tag} --format="{{.ID}}"""
+
     _, err = run_command(job=f"Stopping {image_tag}", command=command)
     if err != 0:
         print("error, notify devops team")
@@ -82,7 +76,7 @@ def get_logs(image_tag):
 
 def get_list_of_images():
     command = f"docker images"
-    # command = f"cd ../app; ls"
+
     _, err = run_command(job=f"getting images", command=command)
     if err != 0:
         print("error, notify devops team")
@@ -116,8 +110,7 @@ if __name__ == "__main__":
         elif arg == "run":
             # print(type(sys.argv[2]))
             run_container(image_tag=f"{sys.argv[2]}", to_detach=False)
-        # elif arg == "stop_all":
-        #     stop_all()
+
         elif arg == "stop":
             stop(sys.argv[2])
         elif arg == "list_images":
@@ -128,7 +121,7 @@ if __name__ == "__main__":
             pass
         else:
             print("Please pass a valid command, type 'sudo python3 devtool.py help'")
-        # get_list_of_images()
+
     except Exception as e:
         print("error! report to your devops team")
         print(e)
