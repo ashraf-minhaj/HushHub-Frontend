@@ -1,0 +1,18 @@
+#########################################
+# author: ashraf minhaj
+# email : ashraf_minhaj@yahoo.com
+# 
+# date: 07-12-23
+# HushHub Frontend 
+#########################################
+
+version: '3.8'
+
+services:
+  backend:
+    image: ashraftheminhaj/hushhub-Frontend:1.0
+    container_name: frontend
+    ports:
+      - "80:3000"
+    env_file:
+      - ./.env
