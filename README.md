@@ -9,6 +9,24 @@
 ![](https://img.shields.io/badge/EJS--yellow?style=plastic&logo=javascript)&nbsp;
 </div>
 
+see [HushHub Backend](https://github.com/ashraf-minhaj/HushHub-Backend)
+
+### Features
+- [x] Dockerize Application 
+- [x] Docker Hot reloading for local development 
+- [x] Multistage build 
+- [x] Separate credentials for local dev and production (.env)
+- [x] Local docker image 
+- [ ] Pull/push from the docker hub 
+- [ ] Log formatting (Configure logging in application) 
+- [x] Docker tool to wrap complex docker commands in a simpler format 
+
+### Improvement scopes (future considerations)
+- application health check monitoring and notification system
+- test scripts to catch bugs at early stage
+- CI/CD
+(more to come)
+
 ### setup local development envionment 
 - Install latest version of docker in your system
 - Install python3 on your system (should come with your distro BTW)
@@ -28,7 +46,7 @@
         run             image_tag 
         stop            image_tag or all
         logs            image_tag
-        errors          image_tag (todo)
+        errors          image_tag 
     ```
 
 ### Environment variable file
