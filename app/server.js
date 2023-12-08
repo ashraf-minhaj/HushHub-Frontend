@@ -27,9 +27,9 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
-app.get("/", (req, res) => {
-  res.send({ message: "Hello World!" })
-})
+// app.get("/", (req, res) => {
+//   res.send({ message: "Hello World!" })
+// })
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
