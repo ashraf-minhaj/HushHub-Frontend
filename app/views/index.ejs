@@ -20,21 +20,36 @@
             // Make a simple POST request using Fetch API
             fetch(url, {
                 method: 'POST',
-            }).then(response => response.json())
+            })
+            .then(response => response.json())
                 .then(data => {
-                    // Assuming your backend responds with the saved message details
-                    const { id, text } = data;
+                    console.log(data)
+                }).catch(error => console.error('Error:', error));
+        }
 
-                    // Display the sent message on the message board
-                    const messageList = document.getElementById('messageList'); //DOM - document object model
+        async function getMessages() {
+            const apiUrl = '<%= apiUrl %>';
+            const url = apiUrl + '/get_messages';
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                });
+
+                const data = await response.json();
+                const messages = data.messages;
+
+                const messageList = document.getElementById('messageList');
+                messageList.innerHTML = ''; // Clear existing messages
+
+                messages.forEach(msg => {
                     const listItem = document.createElement('li');
-                    listItem.textContent = text;
+                    listItem.textContent = msg.message;
                     messageList.appendChild(listItem);
-
-                    // Clear the input field
-                    messageInput.value = '';
-                })
-                .catch(error => console.error('Error:', error));
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
 
         // nodemon --exec npm start
@@ -68,6 +83,7 @@
         <label for="textInput">Your Message:</label>
         <input type="text" id="textInput" placeholder="Write your message..">
         <button onclick="sendMessage()">Send</button>
+        <button onclick="getMessages()">Get Messages</button>
     </div>
 
     <!-- Message Board Section -->

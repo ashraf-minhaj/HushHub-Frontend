@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // const TRUSTED_BACKEND = process.env.BACKEND_API_URL || "";
 
-const whitelist = [ "http://localhost:80"]
+const whitelist = [ "http://localhost:3000"]
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
@@ -26,10 +26,6 @@ const corsOptions = {
   credentials: true,
 }
 app.use(cors(corsOptions))
-
-// app.get("/", (req, res) => {
-//   res.send({ message: "Hello World!" })
-// })
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
