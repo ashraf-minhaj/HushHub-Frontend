@@ -13,43 +13,34 @@
             // Read the backend API URL from the EJS variable
             const apiUrl = '<%= apiUrl %>';
             const message = document.getElementById("textInput").value
-            const url = apiUrl + '/post_message?message=' + message
+            console.log(apiUrl)
             console.log(message)
-            console.log(url)
 
             // Make a simple POST request using Fetch API
-            fetch(url, {
+            // post: api.com/msgs/ <text on body>
+            // get: api.com/msgs/
+            fetch(apiUrl, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
             })
-            .then(response => response.json())
+                .then(response => response.json())
                 .then(data => {
-                    console.log(data)
-                }).catch(error => console.error('Error:', error));
-        }
+                    // Assuming your backend responds with the saved message details
+                    const { id, text } = data;
 
-        async function getMessages() {
-            const apiUrl = '<%= apiUrl %>';
-            const url = apiUrl + '/get_messages';
-
-            try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                });
-
-                const data = await response.json();
-                const messages = data.messages;
-
-                const messageList = document.getElementById('messageList');
-                messageList.innerHTML = ''; // Clear existing messages
-
-                messages.forEach(msg => {
+                    // Display the sent message on the message board
+                    const messageList = document.getElementById('messageList'); //DOM - document object model
                     const listItem = document.createElement('li');
-                    listItem.textContent = msg.message;
+                    listItem.textContent = text;
                     messageList.appendChild(listItem);
-                });
-            } catch (error) {
-                console.error('Error:', error);
-            }
+
+                    // Clear the input field
+                    messageInput.value = '';
+                })
+                .catch(error => console.error('Error:', error));
         }
 
         // nodemon --exec npm start
@@ -83,7 +74,6 @@
         <label for="textInput">Your Message:</label>
         <input type="text" id="textInput" placeholder="Write your message..">
         <button onclick="sendMessage()">Send</button>
-        <button onclick="getMessages()">Get Messages</button>
     </div>
 
     <!-- Message Board Section -->

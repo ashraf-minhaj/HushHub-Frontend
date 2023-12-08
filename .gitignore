@@ -4,6 +4,5 @@ app/*
 !app/.dockerignore
 !app/Dockerfile*
 !app/docker*
-!app/*example
 !server.js 
 .DS_Store

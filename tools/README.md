@@ -1,4 +1,4 @@
-## setup environment first
+## ### setup local development envionment 
 
 - Install latest version of docker in your system
 - Install python3 on your system (should come with your distro BTW)
@@ -11,9 +11,10 @@
     ``` 
         arg          -   value
         help       
+        build           image_tag 
         list_images 
-        run              
-        stop            detach or all
-        logs            
-        errors          
+        run             image_tag 
+        stop            image_tag or all
+        logs            image_tag
+        errors          image_tag
     ```

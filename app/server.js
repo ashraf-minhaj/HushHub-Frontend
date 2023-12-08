@@ -3,29 +3,12 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
-const cors = require("cors");
 
 // Load environment variables from .env file
 dotenv.config();
 
 const app = express();
-
-// get env vars
 const PORT = process.env.PORT || 3000;
-// const TRUSTED_BACKEND = process.env.BACKEND_API_URL || "";
-
-const whitelist = [ "http://localhost:3000"]
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
-  credentials: true,
-}
-app.use(cors(corsOptions))
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
