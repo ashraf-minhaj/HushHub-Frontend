@@ -1,8 +1,0 @@
-app/*
-!app/views
-!app/package*.json
-!app/.dockerignore
-!app/Dockerfile*
-!app/docker*
-!server.js 
-.DS_Store
