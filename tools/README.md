@@ -11,10 +11,9 @@
     ``` 
         arg          -   value
         help       
-        build           image_tag 
         list_images 
-        run             image_tag 
-        stop            image_tag or all
-        logs            image_tag
-        errors          image_tag
+        run              
+        stop            detach or all
+        logs            
+        errors          
     ```

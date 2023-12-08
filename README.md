@@ -9,6 +9,8 @@
 ![](https://img.shields.io/badge/EJS--yellow?style=plastic&logo=javascript)&nbsp;
 </div>
 
+see [demo snap](#demo),
+
 see [HushHub Backend](https://github.com/ashraf-minhaj/HushHub-Backend)
 
 ### Features
@@ -17,8 +19,8 @@ see [HushHub Backend](https://github.com/ashraf-minhaj/HushHub-Backend)
 - [x] Multistage build 
 - [x] Separate credentials for local dev and production (.env)
 - [x] Local docker image 
-- [ ] Pull/push from the docker hub 
-- [ ] Log formatting (Configure logging in application) 
+- [x] Pull/push from the docker hub 
+- [x] Log formatting (Configure logging in application) 
 - [x] Docker tool to wrap complex docker commands in a simpler format 
 
 ### Improvement scopes (future considerations)
@@ -26,6 +28,9 @@ see [HushHub Backend](https://github.com/ashraf-minhaj/HushHub-Backend)
 - test scripts to catch bugs at early stage
 - CI/CD
 (more to come)
+
+### Demo
+![demo](docs/demo.png)
 
 ### setup local development envionment 
 - Install latest version of docker in your system
@@ -40,13 +45,12 @@ see [HushHub Backend](https://github.com/ashraf-minhaj/HushHub-Backend)
 - list of args -
     ``` 
         arg          -   value
-        help       
-        build           image_tag 
+        help        
         list_images 
-        run             image_tag 
-        stop            image_tag or all
-        logs            image_tag
-        errors          image_tag 
+        run             detach/null 
+        stop             
+        logs            
+        errors           
     ```
 
 ### Environment variable file
