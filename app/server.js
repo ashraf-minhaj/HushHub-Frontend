@@ -12,9 +12,9 @@ const app = express();
 
 // get env vars
 const PORT = process.env.PORT || 3000;
-const TRUSTED_BACKEND = process.env.BACKEND_API_URL || "";
+// const TRUSTED_BACKEND = process.env.BACKEND_API_URL || "";
 
-const whitelist = [ TRUSTED_BACKEND]
+const whitelist = [ "http://localhost:80"]
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {

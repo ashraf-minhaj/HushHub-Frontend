@@ -13,7 +13,7 @@
             // Read the backend API URL from the EJS variable
             const apiUrl = '<%= apiUrl %>';
             const message = document.getElementById("textInput").value
-            const url = apiUrl + '/send_message?message=' + message
+            const url = apiUrl + '/post_message?message=' + message
             console.log(message)
             console.log(url)
 
