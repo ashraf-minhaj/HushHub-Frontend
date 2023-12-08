@@ -9,10 +9,10 @@
 version: '3.8'
 
 services:
-  backend:
+  frontend:
     # in future it will be the 'latest' for best practice
     # instead of numeric version
-    image: ashraftheminhaj/hushhub-Frontend:1.0
+    image: ashraftheminhaj/hushhub-frontend:1.0
     container_name: frontend
     ports:
       - "3000:3000"
