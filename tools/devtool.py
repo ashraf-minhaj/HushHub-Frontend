@@ -36,14 +36,14 @@ def run_with_stream(command):
         for line in process.stdout:
             print(line.decode('utf8'))
 
-def build_image(image_tag):
-    """ build docker image by given command. """
-    command = f"cd ../app; docker build -t {image_tag} -f {local_docker_file} ."
-    # command = f"cd ../app; ls"
-    # _, err = run_command(job=f"building {image_tag}", command=command)
-    # if err != 0:
-    #     print("error, notify devops team")
-    run_with_stream(command)
+# def build_image(image_tag):
+#     """ build docker image by given command. """
+#     command = f"cd ../app; docker build -t {image_tag} -f {local_docker_file} ."
+#     # command = f"cd ../app; ls"
+#     # _, err = run_command(job=f"building {image_tag}", command=command)
+#     # if err != 0:
+#     #     print("error, notify devops team")
+#     run_with_stream(command)
 
 def run_app(to_detach=True):
     print(f"Runing app")
@@ -110,8 +110,11 @@ if __name__ == "__main__":
                   """)
         elif arg == "run":
             detach = False
-            if sys.argv[2] == "detach":
-                detach = True
+            try:
+                if sys.argv[2] == "detach":
+                    detach = True
+            except IndexError:
+                pass
             run_app(to_detach=detach)
         elif arg == "stop":
             stop()
