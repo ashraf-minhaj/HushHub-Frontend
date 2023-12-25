@@ -4,16 +4,18 @@
     author: ashraf minhaj
     mail: ashraf_minhaj@yahoo.com
     
-    date: 07-12-2023
+    date: 25-12-2023
 
 a docker wrapper tool for local development env.
 """
 
-import sys
-from subprocess import Popen, PIPE, STDOUT
 
+from subprocess import Popen, PIPE, STDOUT
+import typer
 
 local_compose_file = "docker-compose-dev.yml"
+
+app = typer.Typer()
 
 def run_command(job, command):
     """ runs command and ret err code """
@@ -45,20 +47,23 @@ def run_with_stream(command):
 #     #     print("error, notify devops team")
 #     run_with_stream(command)
 
-def run_app(to_detach=True):
+@app.command()
+def run_app(detach: bool = False):
+    """ run the application. """
     print(f"Runing app")
-    if to_detach:
+    if detach:
         command = f"cd ../app; docker compose -f {local_compose_file} up --build -d"
     else:
         command = f"cd ../app; docker compose -f {local_compose_file} up --build"
         run_with_stream(command)
         return
-    out, err = run_command(job=f"Running app", command=command)
+    _, err = run_command(job=f"Running app", command=command)
     if err != 0:
         print("error, notify devops team")
 
+@app.command()
 def stop():
-    """ stop compose. """
+    """ stop the running application. """
     print(f"stopping app")
     command = f"cd ../app; docker compose -f {local_compose_file} down"
 
@@ -66,21 +71,25 @@ def stop():
     if err != 0:
         print("error, notify devops team")
 
-def get_logs(image_tag):
-    """ get frontend application logs."""
+@app.command()
+def get_logs(image_tag: str = "app-frontend"):
+    """ get application logs."""
     command = f"docker logs $(docker ps -a -q --filter ancestor={image_tag})"
     _, err = run_command(job=f"Getting logs for {image_tag}", command=command)
     if err != 0:
         print("error, notify devops team")
 
-def get_errors(image_tag):
-    """ get frontend application logs."""
+@app.command()
+def get_errors(image_tag: str = "app-frontend"):
+    """ get application errors."""
     command = f"docker logs $(docker ps -a -q --filter ancestor={image_tag}) | grep error"
     _, err = run_command(job=f"Getting logs for {image_tag}", command=command)
     if err != 0:
         print("Probably no error found, if you are sure otherwise - notify devops team")
 
-def get_list_of_images():
+@app.command()
+def list_images():
+    """ get_list_of_images. """
     command = f"docker images"
     _, err = run_command(job=f"getting images", command=command)
     if err != 0:
@@ -88,47 +97,4 @@ def get_list_of_images():
 
 if __name__ == "__main__":
     print("Thanks for using the tool, let us know if you face any bugs.")
-    try:
-        # get user command
-        arg = sys.argv[1]
-
-        if arg == "help":
-            print("""
-                  dev tool to enhance developer experience.
-
-                  run tool - 
-                  $ sudo python3 devtool.py <arg> <value>
-                  list of args -
-                    arg          -   value
-                    help       
-                    list_images 
-                    run              detach/null
-                    stop             or all
-                    logs            
-                    errors           
-                    
-                  """)
-        elif arg == "run":
-            detach = False
-            try:
-                if sys.argv[2] == "detach":
-                    detach = True
-            except IndexError:
-                pass
-            run_app(to_detach=detach)
-        elif arg == "stop":
-            stop()
-        elif arg == "list_images":
-            get_list_of_images()
-        elif arg == "logs":
-            image_tag = "app-frontend"
-            get_logs(image_tag)
-        elif arg == "errors":
-            image_tag = "app-frontend"
-            get_errors(image_tag)
-        else:
-            print("Please pass a valid command, type 'sudo python3 devtool.py help'")
-        # get_list_of_images()
-    except Exception as e:
-        print("error! report to your devops team")
-        print(e)
+    app()
