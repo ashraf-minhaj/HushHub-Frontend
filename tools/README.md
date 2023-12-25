@@ -10,7 +10,7 @@
 
 - Now run the tool from your 'app' directory. 
      ```
-        $ devtool 
+        $ devtool run --app-name devfrontend
     ```
 
 - example `devtool --help` -
@@ -29,6 +29,7 @@
         get-errors   get application errors.
         get-logs     get application logs.
         list-images  get list of images.
-        run-app      run the application.
-        stop         stop the running application.     
+        ls           get list of things in current directory, use it to see if...
+        run          run the application.
+        stop         stop the running application.
     ```
