@@ -3,17 +3,33 @@
 - Install latest version of docker in your system
 - Install python3 on your system (should come with your distro BTW)
 
-- run tool - 
+- Setup devtool. Go to 'tools' dir and run -
     ```
-        $ sudo python3 devtool.py <arg> <value>
+        $ pip3 install .
     ```
-- list of args -
+
+- Now run the tool from your 'app' directory. 
+     ```
+        $ devtool run --app-name devfrontend
+    ```
+
+- example `devtool --help` -
     ``` 
-        arg          -   value
-        help       
-        list_images 
-        run              
-        stop            detach or all
-        logs            
-        errors          
+        Usage: devtool [OPTIONS] COMMAND [ARGS]...
+
+        Options:
+        --install-completion [bash|zsh|fish|powershell|pwsh]
+                                        Install completion for the specified shell.
+        --show-completion [bash|zsh|fish|powershell|pwsh]
+                                        Show completion for the specified shell, to
+                                        copy it or customize the installation.
+        --help                          Show this message and exit.
+
+        Commands:
+        get-errors   get application errors.
+        get-logs     get application logs.
+        list-images  get list of images.
+        ls           get list of things in current directory, use it to see if...
+        run          run the application.
+        stop         stop the running application.
     ```
