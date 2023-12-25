@@ -89,7 +89,7 @@ def get_errors(image_tag: str = "app-frontend"):
 
 @app.command()
 def list_images():
-    """ get_list_of_images. """
+    """ get list of images. """
     command = f"docker images"
     _, err = run_command(job=f"getting images", command=command)
     if err != 0:
